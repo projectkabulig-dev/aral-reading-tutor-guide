@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>How to Use the ARAL Reading Basic Tutor’s Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700;800&family=Lexend:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  --paper:#EEF4FA; --stage:#FFFFFF; --ink:#12263F; --ink2:#46596F; --grid:#DCE7F2; --line:#C5D4E4;
+  --accent:#2457D6; --accent-bg:#E4ECFF; --star:#E6A800; --tri:#7A4DE0; --circ:#DB3A49;
+  --good:#14804A; --good-bg:#DDF4E7; --bad:#C62F3E; --bad-bg:#FDE5E8; --chip:#F3F7FB;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0A1424; --stage:#10203A; --ink:#EAF1F8; --ink2:#A3B6CB; --grid:#1A2F4B; --line:#2A4262;
+    --accent:#86AAFF; --accent-bg:#1B2F5E; --star:#FFD24A; --tri:#AE92FF; --circ:#FF6F7C;
+    --good:#4FD28D; --good-bg:#10382A; --bad:#FF7C88; --bad-bg:#42202A; --chip:#16294A;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0A1424; --stage:#10203A; --ink:#EAF1F8; --ink2:#A3B6CB; --grid:#1A2F4B; --line:#2A4262;
+  --accent:#86AAFF; --accent-bg:#1B2F5E; --star:#FFD24A; --tri:#AE92FF; --circ:#FF6F7C;
+  --good:#4FD28D; --good-bg:#10382A; --bad:#FF7C88; --bad-bg:#42202A; --chip:#16294A;
+  color-scheme:dark;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"Lexend",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.45;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:"Bricolage Grotesque","Lexend",system-ui,sans-serif;margin:0;line-height:1.08;letter-spacing:-.01em}
+button,select{font:inherit;color:inherit}
+.page{max-width:1180px;margin:0 auto;padding:18px 16px 28px}
+.top{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.top svg{width:26px;height:26px;color:var(--accent);flex:none}
+.top p{margin:0;font-weight:600;font-size:15px}
+.top span{color:var(--ink2);font-size:13px;margin-left:auto}
+
+/* ---------- player ---------- */
+.stage{position:relative;container-type:inline-size;aspect-ratio:16/9;background:var(--stage);border:2px solid var(--line);border-radius:18px;overflow:hidden;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:28px 28px;background-position:-1px -1px}
+.slide{position:absolute;inset:0;display:none;padding:clamp(18px,3.6cqw,52px) clamp(18px,4.4cqw,64px);gap:clamp(16px,3.4cqw,48px);align-items:center;grid-template-columns:1.02fr 1fr;overflow:hidden}
+.slide.active{display:grid}
+.slide.solo{grid-template-columns:1fr}
+.slide.center{text-align:center;justify-items:center}
+.copy{display:flex;flex-direction:column;gap:clamp(10px,1.6cqw,22px);min-width:0}
+h1{font-size:clamp(28px,6.2cqw,76px);font-weight:800}
+h2{font-size:clamp(23px,4cqw,50px);font-weight:700}
+.lead{font-size:clamp(15px,2.2cqw,27px);margin:0;max-width:34ch;color:var(--ink2)}
+.copy .lead{max-width:30ch}
+.sm{font-size:clamp(13px,1.75cqw,21px);color:var(--ink2);margin:0}
+.tag{align-self:flex-start;display:inline-flex;align-items:center;gap:8px;background:var(--accent-bg);color:var(--accent);border:1.5px solid var(--accent);border-radius:999px;padding:.25em .9em;font-weight:600;font-size:clamp(12px,1.6cqw,19px)}
+.center .tag{align-self:center}
+.tag svg{width:1.1em;height:1.1em}
+.vis{position:relative;min-width:0;display:flex;flex-direction:column;gap:clamp(8px,1.4cqw,18px);justify-content:center}
+
+/* motion: scenes build in the order the narration mentions things */
+@keyframes in{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes pop{0%{opacity:0;transform:scale(.6)}70%{opacity:1;transform:scale(1.07)}100%{opacity:1;transform:none}}
+@keyframes wipe{from{opacity:0;clip-path:inset(0 100% 0 0)}to{opacity:1;clip-path:inset(0 0 0 0)}}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes strike{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes lit{0%{background:var(--chip);border-color:var(--line)}100%{background:var(--hl-bg);border-color:var(--hl);color:var(--ink)}}
+@keyframes grow{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+@keyframes slideTo{from{left:0}to{left:calc(var(--p)*1%)}}
+@keyframes fill{from{width:0}to{width:100%}}
+.slide.active .r{animation:in .65s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(var(--d,0)*1s)}
+.slide.active .pop{animation:pop .6s cubic-bezier(.3,1.4,.5,1) both;animation-delay:calc(var(--d,0)*1s)}
+.slide.active .wipe{animation:wipe .8s ease-out both;animation-delay:calc(var(--d,0)*1s)}
+.frozen .slide.active *{animation-play-state:paused !important}
+
+/* generic pieces */
+.card{background:var(--stage);border:2px solid var(--line);border-radius:14px;padding:clamp(10px,1.6cqw,20px) clamp(12px,1.9cqw,24px);font-size:clamp(14px,1.95cqw,24px)}
+.card b{font-weight:600}
+.card small{display:block;color:var(--ink2);font-size:.82em;margin-top:.15em}
+.list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:clamp(8px,1.3cqw,16px)}
+.list li{display:flex;gap:.7em;align-items:flex-start;font-size:clamp(14px,2cqw,25px)}
+.list li::before{content:"";flex:none;width:.62em;height:.62em;margin-top:.5em;border-radius:50%;background:var(--accent)}
+.no li::before{background:var(--bad)}
+.yes li::before{background:var(--good)}
+.mk{width:1.5em;height:1.5em;flex:none}
+.mk.star{color:var(--star)} .mk.tri{color:var(--tri)} .mk.circ{color:var(--circ)}
+svg.i{fill:none;stroke:currentColor;stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:clamp(10px,1.8cqw,24px)}
+.pair h3{font-size:clamp(17px,2.4cqw,30px);margin-bottom:.5em;display:flex;align-items:center;gap:.5em}
+.pair .card.y{border-color:var(--good);background:var(--good-bg)}
+.pair .card.n{border-color:var(--bad);background:var(--bad-bg)}
+.badge{width:1.2em;height:1.2em;border-radius:50%;display:inline-grid;place-items:center;color:#fff;font-size:.9em;flex:none}
+.badge.y{background:var(--good)} .badge.n{background:var(--bad)}
+
+/* slide 0: instructions */
+.keys{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(8px,1.4cqw,18px)}
+.key{display:flex;flex-direction:column;gap:.35em}
+.key kbd{align-self:flex-start;font-family:inherit;font-weight:600;font-size:.9em;background:var(--chip);border:1.5px solid var(--line);border-bottom-width:3px;border-radius:8px;padding:.05em .55em}
+.start{align-self:flex-start;display:inline-flex;align-items:center;gap:.6em;background:var(--accent);color:#fff;border:0;border-radius:999px;padding:.7em 1.5em .7em 1.1em;font-weight:600;font-size:clamp(15px,2.1cqw,26px);cursor:pointer}
+:root[data-theme="dark"] .start{color:#08142B}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .start{color:#08142B}}
+.start svg{width:1.3em;height:1.3em;fill:currentColor}
+.start:focus-visible,.bar button:focus-visible,.bar select:focus-visible,.seg:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+
+/* title */
+.hero-marks{width:100%;max-width:520px;justify-self:center}
+.hero-marks path,.hero-marks circle{fill:none;stroke-width:5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:420;stroke-dashoffset:420}
+.slide.active .hero-marks .a{animation:draw 1.1s ease-out .5s forwards}
+.slide.active .hero-marks .b{animation:draw 1.1s ease-out 1.5s forwards}
+.slide.active .hero-marks .c{animation:draw 1.1s ease-out 2.5s forwards}
+.hero-marks .a{stroke:var(--star)} .hero-marks .b{stroke:var(--tri)} .hero-marks .c{stroke:var(--circ)}
+.sheet{background:var(--stage);border:2px solid var(--line);border-radius:12px;padding:14px 16px}
+
+/* contents */
+.parts{display:grid;gap:clamp(8px,1.3cqw,16px)}
+.part{display:flex;gap:1em;align-items:center}
+.part .n{width:2em;height:2em;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font-weight:700;flex:none}
+:root[data-theme="dark"] .part .n{color:#08142B}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .part .n{color:#08142B}}
+.books{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(6px,1cqw,12px)}
+.book{background:var(--chip);border:2px solid var(--line);border-left:6px solid var(--accent);border-radius:8px;padding:.5em .6em;font-weight:600;font-size:clamp(12px,1.7cqw,21px)}
+.book small{display:block;font-weight:400;color:var(--ink2);font-size:.8em}
+
+/* stairs */
+.stairs{display:flex;align-items:flex-end;gap:clamp(6px,1cqw,14px);height:clamp(150px,24cqw,300px);position:relative;padding-top:2em}
+.stairs .st{flex:1;background:var(--accent-bg);border:2px solid var(--accent);border-radius:8px 8px 0 0;transform-origin:bottom;display:grid;place-items:end center;padding-bottom:.4em;font-weight:600;color:var(--accent);font-size:clamp(11px,1.5cqw,18px);height:var(--h)}
+.slide.active .stairs .st{animation:grow .6s ease-out both;animation-delay:calc(var(--d)*1s)}
+.stairs .topstar{position:absolute;right:0;top:-.2em;width:clamp(34px,5cqw,64px);color:var(--star)}
+
+/* ladder */
+.ladder{display:flex;flex-direction:column;gap:clamp(4px,.7cqw,8px);width:100%;max-width:520px}
+.rung{background:var(--chip);border:2px solid var(--line);border-radius:10px;padding:.35em .9em;font-weight:500;font-size:clamp(12px,1.85cqw,22px);display:flex;justify-content:space-between;gap:1em}
+.rung em{font-style:normal;color:var(--ink2);font-size:.85em}
+.rung.base{border-color:var(--ink);border-width:3px;background:var(--stage)}
+.slide.active .rung.up{--hl:var(--good);--hl-bg:var(--good-bg);animation:lit .5s ease forwards;animation-delay:calc(var(--d)*1s)}
+.slide.active .rung.dn{--hl:var(--tri);--hl-bg:var(--accent-bg);animation:lit .5s ease forwards;animation-delay:calc(var(--d)*1s)}
+
+/* lanes */
+.lane{background:var(--stage);border:2px solid var(--line);border-radius:12px;padding:.55em .9em .9em;font-size:clamp(13px,1.8cqw,22px)}
+.lane .nm{display:flex;justify-content:space-between;font-weight:600;margin-bottom:.7em}
+.lane .nm span{color:var(--ink2);font-weight:400}
+.track{position:relative;height:.5em;background:var(--grid);border-radius:99px;margin:0 .9em}
+.tok{position:absolute;top:50%;left:0;width:1.7em;height:1.7em;margin:-.85em 0 0 -.85em;border-radius:50%;background:var(--accent);border:3px solid var(--stage);box-shadow:0 0 0 2px var(--accent)}
+.slide.active .tok{animation:slideTo 2s cubic-bezier(.3,.7,.2,1) both;animation-delay:calc(var(--d)*1s)}
+
+/* chat */
+.eq{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:clamp(28px,5cqw,64px);text-align:center}
+.bubble{max-width:92%;padding:.6em .95em;border-radius:16px;font-size:clamp(13px,1.85cqw,23px);border:2px solid var(--line);background:var(--stage)}
+.bubble.t{align-self:flex-start;border-top-left-radius:4px;border-color:var(--accent);background:var(--accent-bg)}
+.bubble.k{align-self:flex-end;border-top-right-radius:4px;border-color:var(--good);background:var(--good-bg);font-weight:600}
+.who{display:block;font-size:.75em;color:var(--ink2);font-weight:500;margin-bottom:.1em}
+
+/* worksheet mock */
+.ws{position:relative;background:var(--stage);border:2px solid var(--line);border-radius:12px;padding:clamp(10px,1.6cqw,20px) clamp(12px,2cqw,26px);font-size:clamp(13px,1.95cqw,24px)}
+.ws .hd{display:flex;justify-content:space-between;align-items:center;font-weight:600;border-bottom:2px dashed var(--line);padding-bottom:.5em;margin-bottom:.4em;min-height:2em}
+.ws .row{position:relative;display:flex;justify-content:space-between;align-items:center;padding:.4em 0;border-bottom:1px solid var(--grid)}
+.ws .row:last-child{border:0}
+.ws .row .m{width:1.7em;height:1.7em}
+.tally{display:flex;gap:.9em;align-items:center;position:relative}
+.tally span{display:inline-flex;gap:.25em;align-items:center}
+.tally svg{width:1.3em;height:1.3em}
+.cross{position:absolute;left:-.2em;right:-.2em;top:50%;height:3px;background:var(--bad);transform-origin:left;border-radius:3px}
+.slide.active .cross{animation:strike .5s ease-out both;animation-delay:calc(var(--d)*1s)}
+.legend{display:flex;flex-direction:column;gap:clamp(8px,1.3cqw,16px)}
+.legend .lg{display:flex;gap:.8em;align-items:center;font-size:clamp(14px,2cqw,25px)}
+.legend .lg svg{width:2em;height:2em;flex:none}
+
+/* flow */
+.flow{display:flex;flex-direction:column;gap:clamp(6px,1cqw,12px);width:100%}
+.node{position:relative;display:flex;align-items:center;gap:.8em;background:var(--stage);border:2px solid var(--line);border-radius:12px;padding:.5em .9em;font-size:clamp(13px,1.9cqw,23px);font-weight:500}
+.node i{font-style:normal;flex:none;width:1.8em;height:1.8em;border-radius:50%;display:grid;place-items:center;background:var(--accent-bg);color:var(--accent);font-weight:700;border:2px solid var(--accent)}
+.node.ok{border-color:var(--good);background:var(--good-bg)}
+.flow.tight{gap:clamp(4px,.6cqw,8px)}
+.flow.tight .node{padding:.3em .8em;font-size:clamp(11px,1.5cqw,18px)}
+.flow.tight .node i{width:1.6em;height:1.6em}
+.note{border-left:5px solid var(--tri);padding-left:.9em;font-size:clamp(13px,1.8cqw,22px)}
+
+/* closing */
+.big{font-family:"Bricolage Grotesque",sans-serif;font-weight:700;font-size:clamp(18px,3.2cqw,40px);line-height:1.15}
+.pillars{display:flex;flex-direction:column;gap:clamp(8px,1.4cqw,18px);align-items:flex-start;text-align:left}
+.pillars .big{display:flex;gap:.55em;align-items:center}
+.pillars .big svg{width:1.1em;height:1.1em;flex:none}
+
+/* controls */
+.cap{margin:12px 2px 0;min-height:3.6em;font-size:clamp(15px,1.15vw + 11px,20px);line-height:1.5;color:var(--ink)}
+.cap[hidden]{display:none}
+.bar{display:flex;flex-wrap:wrap;align-items:center;gap:10px 12px;margin-top:12px}
+.bar button,.bar select{background:var(--stage);border:2px solid var(--line);border-radius:999px;padding:.4em .9em;cursor:pointer;font-size:14px;font-weight:500;min-height:42px}
+.bar button[aria-pressed="true"]{background:var(--accent-bg);border-color:var(--accent);color:var(--accent)}
+.bar .ico{width:44px;height:44px;padding:0;display:grid;place-items:center}
+.bar .ico svg{width:20px;height:20px;fill:currentColor}
+.bar #pp{background:var(--accent);border-color:var(--accent);color:#fff;width:52px;height:52px}
+:root[data-theme="dark"] .bar #pp{color:#08142B}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .bar #pp{color:#08142B}}
+.bar #pp .pa{display:none}
+.playing .bar #pp .pl{display:none}
+.playing .bar #pp .pa{display:block}
+.segs{display:flex;gap:4px;flex:1 1 220px;min-width:180px}
+.bar .seg{flex:1;height:14px;padding:0;border:0;background:var(--line);border-radius:4px;position:relative;overflow:hidden;cursor:pointer;min-height:0}
+.seg i{position:absolute;inset:0;width:0;background:var(--accent)}
+.seg.done i{width:100%}
+.seg.cur i{animation:fill var(--dur,8s) linear forwards paused}
+.playing .seg.cur i{animation-play-state:running}
+.frozen .seg.cur i{animation-play-state:paused}
+.count{font-size:13px;color:var(--ink2);white-space:nowrap}
+
+@media (max-width:760px){
+  .stage{aspect-ratio:auto;height:min(78svh,640px);min-height:470px}
+  .slide{grid-template-columns:1fr;align-content:start;overflow-y:auto;align-items:start}
+  .keys{grid-template-columns:1fr 1fr}
+  .books{grid-template-columns:repeat(2,1fr)}
+  .hero-marks{max-width:280px}
+  .pair{grid-template-columns:1fr}
+  .top span{display:none}
+}
+@media (prefers-reduced-motion: reduce){
+  .slide.active .r,.slide.active .pop,.slide.active .wipe,.slide.active .stairs .st,.slide.active .tok,.slide.active .cross{animation-duration:.01s;animation-delay:0s}
+  .slide.active .hero-marks path,.slide.active .hero-marks circle{animation-duration:.01s;animation-delay:0s}
+  .slide.active .rung.up,.slide.active .rung.dn{animation-duration:.01s;animation-delay:0s}
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3 6.1 20.6l1.3-6.6L2.5 9.4l6.6-.8z"/></symbol>
+  <symbol id="i-tri" viewBox="0 0 24 24"><path d="M12 3.5L21 20H3z"/></symbol>
+  <symbol id="i-circ" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M3 5.5c3-1.3 6-1.3 9 .5 3-1.8 6-1.8 9-.5V19c-3-1.3-6-1.3-9 .5-3-1.8-6-1.8-9-.5z"/><path d="M12 6v13.5"/></symbol>
+</svg>
+<div class="page">
+  <div class="top">
+    <svg class="i" aria-hidden="true"><use href="#i-book"/></svg>
+    <p>How to use the ARAL Reading Basic Tutor’s Guide</p>
+    <span>Key Stage 2 and Key Stage 3</span>
+  </div>
+
+  <div class="player" id="player">
+    <div class="stage" id="stage">
+
+      <!-- 0: instructions -->
+      <section class="slide" data-title="How to watch" data-narr="Welcome, tutor. Press Play to start this video. You can pause at any time, move between scenes with the arrow keys, and change the speed. The voice plays automatically, and the words you hear are also shown below the screen.">
+        <div class="copy">
+          <h2 class="r" style="--d:.1">Before you press play</h2>
+          <p class="lead r" style="--d:.4">This short video shows how to use the Reading Basic Tutor’s Guides for Key Stage 2 and Key Stage 3.</p>
+          <button class="start r" style="--d:.8" id="startBtn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>Start the video</button>
+        </div>
+        <div class="vis">
+          <div class="keys">
+            <div class="card key r" style="--d:1.6"><kbd>Space</kbd><b>Play or pause</b></div>
+            <div class="card key r" style="--d:2.2"><kbd>← →</kbd><b>Previous or next scene</b></div>
+            <div class="card key r" style="--d:2.8"><kbd>Voice</kbd><b>Plays automatically</b></div>
+            <div class="card key r" style="--d:3.4"><kbd>Speed</kbd><b>Slower or faster</b></div>
+            <div class="card key r" style="--d:4.0"><kbd>Captions</kbd><b>Show the text below</b></div>
+            <div class="card key r" style="--d:4.6"><kbd>F</kbd><b>Full screen</b></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 1: title -->
+      <section class="slide" data-title="Title" data-narr="This video shows ARAL tutors how to use the Reading Basic Tutor’s Guides for Key Stage 2 and Key Stage 3: what is inside, the parts of every session, and how the tutor and the learners share the work.">
+        <div class="copy">
+          <h1 class="r" style="--d:.2">How to use the ARAL Reading Basic Tutor’s Guide</h1>
+          <p class="lead r" style="--d:.9">For tutors of Key Stage 2 and Key Stage 3.</p>
+        </div>
+        <div class="vis">
+          <svg class="hero-marks" viewBox="0 0 400 300" aria-hidden="true">
+            <path class="a" d="M70 40l22 46 50 6-37 35 10 50-45-26-45 26 10-50-37-35 50-6z" transform="translate(60 10) scale(.9)"/>
+            <path class="b" d="M200 150l60 100h-120z" transform="translate(70 -20)"/>
+            <circle class="c" cx="300" cy="215" r="52"/>
+          </svg>
+        </div>
+      </section>
+
+      <!-- 2: what's inside -->
+      <section class="slide" data-title="What is inside" data-narr="Each Basic guide has eight intervention weeks. Every week has four sessions, Session One to Session Four. At the top of each week, the guide shows the week’s focus and the language of the lessons.">
+        <div class="copy">
+          <h2 class="r" style="--d:.1">What is inside every guide</h2>
+          <div class="parts">
+            <div class="part card r" style="--d:3"><span class="n">8</span><div><b>Intervention weeks</b><small>Week 1 to Week 8</small></div></div>
+            <div class="part card r" style="--d:5"><span class="n">4</span><div><b>Sessions a week</b><small>Session One to Session Four</small></div></div>
+            <div class="part card r" style="--d:8"><span class="n">★</span><div><b>Focus and language</b><small>Shown at the top of each week</small></div></div>
+          </div>
+        </div>
+        <div class="vis">
+          <div class="card r" style="--d:11"><b>Same guide, two key stages</b><small>Key Stage 2 and Key Stage 3 each have their own Basic guide.</small></div>
+        </div>
+      </section>
+
+      <!-- 3: language by week -->
+      <section class="slide" data-title="Language of the lessons" data-narr="Check the language box at the top of every week. In both Basic guides, Weeks 1 to 4 are marked Filipino, and Weeks 5 to 8 are marked English. The lesson text follows that language, so prepare ahead.">
+        <div class="copy">
+          <h2 class="r" style="--d:.1">Check the language box</h2>
+          <p class="lead r" style="--d:2.5">It is at the top of every week.</p>
+        </div>
+        <div class="vis">
+          <div class="card r" style="--d:6"><b>Weeks 1 to 4</b><small>Filipino</small></div>
+          <div class="card r" style="--d:10"><b>Weeks 5 to 8</b><small>English</small></div>
+          <p class="sm r" style="--d:14">Prepare ahead. The lesson text follows the language of the week.</p>
+        </div>
+      </section>
+
+      <!-- 4: weekly focus -->
+      <section class="slide" data-title="The weekly focus" data-narr="Each week has a focus. For example, Week 1 is Word Concept, which means print carries meaning and words have boundaries. Week 3 is Syllable Manipulation, with clapping, deleting and blending. Week 8 is Phoneme Manipulation, with blends and C V C e words. The focus tells you what the whole week builds toward.">
+        <div class="copy">
+          <h2 class="r" style="--d:.1">Start with the weekly focus</h2>
+          <p class="lead r" style="--d:2">Examples from both guides</p>
+        </div>
+        <div class="vis">
+          <div class="card r" style="--d:5"><b>Week 1: Word Concept</b><small>Print carries meaning; word boundaries</small></div>
+          <div class="card r" style="--d:11"><b>Week 3: Syllable Manipulation</b><small>Clapping, deleting, blending</small></div>
+          <div class="card r" style="--d:17"><b>Week 8: Phoneme Manipulation</b><small>Plus blends and CVCe</small></div>
+        </div>
+      </section>
+
+      <!-- 5: session table -->
+      <section class="slide" data-title="Reading a session table" data-narr="Each week is laid out as a table, one column for each session. At the top you find the letters, sounds or words for that session, the objectives, and the materials you need. Below them are the parts of the session, in order, with the minutes for each part.">
+        <div class="copy">
+          <h2 class="r" style="--d:.1">Reading a session table</h2>
+          <p class="lead r" style="--d:2">One column for each session.</p>
+        </div>
+        <div class="vis">
+          <div class="card r" style="--d:5"><b>Focus</b><small>The letters, sounds or words of the session</small></div>
+          <div class="card r" style="--d:8"><b>Objectives</b><small>What learners will be able to do</small></div>
+          <div class="card r" style="--d:11"><b>Materials</b><small>For example emoji cards, flashcards, letter cards, LAS copies</small></div>
+          <div class="card r" style="--d:14"><b>Parts of the session</b><small>In order, with minutes for each part</small></div>
+        </div>
+      </section>
+
+      <!-- 6: parts overview -->
+      <section class="slide" data-title="The parts of a session" data-narr="These are the parts of a Basic session. Opening Routine and Socio-Emotional Warm-Up. Listening and Language Development through Storytelling. Letter and Word Review from Previous Sessions. Explicit Phonics and Word Work Instruction. Fluency and Comprehension through Play-Based Practice. Sight Word Recognition and Fluency Practice. And Closing, or Reflection. The minutes and the order can change from week to week, so always read the table.">
+        <div class="copy">
+          <h2 class="r" style="--d:.1">The parts of a session</h2>
+          <p class="sm r" style="--d:22">Minutes and order can change by week. Always read the table.</p>
+        </div>
+        <div class="vis">
+          <div class="flow tight">
+            <div class="node r" style="--d:3.5"><i>1</i>Opening Routine and Socio-Emotional Warm-Up</div>
+            <div class="node r" style="--d:6.8"><i>2</i>Listening and Language Development through Storytelling</div>
+            <div class="node r" style="--d:10.8"><i>3</i>Letter and Word Review from Previous Sessions</div>
+            <div class="node r" style="--d:14"><i>4</i>Explicit Phonics and Word Work Instruction</div>
+            <div class="node r" style="--d:17"><i>5</i>Fluency and Comprehension through Play-Based Practice</div>
+            <div class="node r" style="--d:20.5"><i>6</i>Sight Word Recognition and Fluency Practice</div>
+            <div class="node r" style="--d:24"><i>7</i>Closing / Reflection</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 7: opening + listening -->
+      <section class="slide" data-title="Warm up and listen" data-narr="Start every session warmly. In Week 1, learners show how they feel with emoji cards, then do a short energizer or a song with movements. Next comes listening and language development: the tutor uses pictures, a short video or questions to get learners talking before a story.">
+        <div class="copy">
+          <span class="tag r" style="--d:.1">Parts 1 and 2</span>
+          <h2 class="r" style="--d:.5">Warm up, then listen</h2>
+          <p class="sm r" style="--d:3">Example: Key Stage 2, Week 1</p>
+        </div>
+        <div class="vis">
+          <div class="card r" style="--d:6"><b>Feelings check-in</b><small>Learners show how they feel with emoji cards</small></div>
+          <div class="card r" style="--d:10"><b>Energizer or song</b><small>A short stretch, or a song with movements</small></div>
+          <div class="card r" style="--d:15"><b>Listening and language</b><small>Pictures, a short video or questions, before a story</small></div>
+        </div>
+      </section>
+
+      <!-- 8: review + explicit -->
+      <section class="slide" data-title="Review and word work" data-narr="Then review the letters and words from earlier sessions. After that comes Explicit Phonics and Word Work. In Week 1 the tutor introduces the new letter and its sound, and learners say it and write it in the air. Then learners answer the Learning Activity Sheet, the L A S, for example by circling the pictures that begin with the letter.">
+        <div class="copy">
+          <span class="tag r" style="--d:.1">Parts 3 and 4</span>
+          <h2 class="r" style="--d:.5">Review, then word work</h2>
+          <p class="sm r" style="--d:3">Example: Key Stage 2, Week 1</p>
+        </div>
+        <div class="vis">
+          <div class="card r" style="--d:5"><b>Review</b><small>Letters and words from earlier sessions</small></div>
+          <div class="card r" style="--d:10"><b>Introduce the new letter</b><small>Say its sound. Learners say it and write it in the air.</small></div>
+          <div class="card r" style="--d:19"><b>Learners answer the LAS</b><small>For example, circle the pictures that begin with the letter</small></div>
+        </div>
+      </section>
+
+      <!-- 9: play-based + sight words -->
+      <section class="slide" data-title="Practice through play" data-narr="Next is practice through play. In Week 1, a learner picks a picture card from a box, says what it is, names the first sound, and matches the right letter card. The tutor gives praise, and learners take turns. The guide also lists sight word practice as its own part, and Week 1 includes a phonological awareness activity where learners blend syllables, for example, mi and sa make misa.">
+        <div class="copy">
+          <span class="tag r" style="--d:.1">Parts 5 and 6</span>
+          <h2 class="r" style="--d:.5">Practice through play</h2>
+          <p class="sm r" style="--d:3">Example: Key Stage 2, Week 1</p>
+        </div>
+        <div class="vis">
+          <div class="card r" style="--d:6"><b>Pick a picture card</b><small>Say what it is and its first sound</small></div>
+          <div class="card r" style="--d:11"><b>Match the letter card</b><small>Praise the learner. Take turns.</small></div>
+          <div class="card r" style="--d:20"><b>Blend syllables</b><small>/mi/ + /sa/ = misa</small></div>
+        </div>
+      </section>
+
+      <!-- 10: closing -->
+      <section class="slide" data-title="Closing and reflection" data-narr="End with a closing reflection. Give learners time to think about what they learned and how they felt. The guide suggests questions such as: what did we learn today, what was the happiest part, which part was hardest and which was easiest, and what helped us read better. Learners may also answer with emojis.">
+        <div class="copy">
+          <span class="tag r" style="--d:.1">Part 7</span>
+          <h2 class="r" style="--d:.5">Closing and reflection</h2>
+          <p class="lead r" style="--d:3">Think about what was learned.</p>
+        </div>
+        <div class="vis">
+          <div class="bubble t r" style="--d:8"><span class="who">Tutor</span>What did we learn today?</div>
+          <div class="bubble t r" style="--d:11.5"><span class="who">Tutor</span>What was the happiest part? Which part was hardest, and which was easiest?</div>
+          <div class="bubble t r" style="--d:17"><span class="who">Tutor</span>What helped us read better?</div>
+          <p class="sm r" style="--d:21">Learners may answer with emojis.</p>
+        </div>
+      </section>
+
+      <!-- 11: added rule - not a classroom teacher -->
+      <section class="slide solo" data-title="Not a classroom teacher" data-narr="Added rule: a tutor is not a classroom teacher. Run the parts of the session as the guide says. But when learners reach the independent parts, the Learning Activity Sheets and the practice activities, let them answer on their own. Help them only when they are stuck, with a question or a hint, never the direct answer.">
+        <div class="copy">
+          <span class="tag r" style="--d:.1"><svg class="i" viewBox="0 0 24 24"><use href="#i-star"/></svg>Added rule</span>
+          <h2 class="r" style="--d:.5">A tutor is not a classroom teacher</h2>
+        </div>
+        <div class="pair vis">
+          <div class="r" style="--d:8">
+            <h3><span class="badge n">✕</span>Not this</h3>
+            <div class="card n"><ul class="list no"><li>Lecturing while learners do the LAS</li><li>Giving the answer when a learner hesitates</li></ul></div>
+          </div>
+          <div class="r" style="--d:12">
+            <h3><span class="badge y">✓</span>This</h3>
+            <div class="card y"><ul class="list yes"><li>Learners answer the LAS and practice on their own</li><li>Help only when stuck: a question or a hint</li></ul></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 12: added rule - guide by reading profile -->
+      <section class="slide" data-title="Match the guide to the learner" data-narr="Added rule: choose the guide that fits the learner’s Reading Profile. Use the learner’s Phil-IRI result and what you observe. If the Basic guide is already too hard, a Key Stage 1 guide may fit better. If a learner is strong, move up to the Plus guide. The tutor may move a learner up or down.">
+        <div class="copy">
+          <span class="tag r" style="--d:.1"><svg class="i" viewBox="0 0 24 24"><use href="#i-star"/></svg>Added rule</span>
+          <h2 class="r" style="--d:.5">Match the guide to the learner</h2>
+          <ul class="list">
+            <li class="r" style="--d:6">Check the Reading Profile: Phil-IRI and what you observe.</li>
+            <li class="r" style="--d:13">Too hard? A Key Stage 1 guide may fit better.</li>
+            <li class="r" style="--d:19">Strong? Move up to the Plus guide.</li>
+          </ul>
+        </div>
+        <div class="vis">
+          <div class="ladder" aria-label="Plus guide at the top, Basic guide in the middle, Key Stage 1 guide at the bottom">
+            <div class="rung up" style="--d:19.5">Plus guide<em>move up</em></div>
+            <div class="rung base r" style="--d:6">Basic guide<em>start here</em></div>
+            <div class="rung dn" style="--d:14">Key Stage 1 guide<em>step down</em></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 13: closing -->
+      <section class="slide solo center" data-title="Remember" data-narr="Remember: check the language and the focus of the week. Follow the parts of the session. Let learners do the answering. Hint, don’t tell. Match the guide to each child. And celebrate effort. Thank you for helping our learners grow.">
+        <div class="pillars">
+          <h2 class="r" style="--d:.1">Remember</h2>
+          <div class="big r" style="--d:2.2"><svg class="i" viewBox="0 0 24 24" style="color:var(--star)"><use href="#i-star"/></svg>Check the language and focus</div>
+          <div class="big r" style="--d:4.8"><svg class="i" viewBox="0 0 24 24" style="color:var(--tri)"><use href="#i-tri"/></svg>Follow the parts of the session</div>
+          <div class="big r" style="--d:7.4"><svg class="i" viewBox="0 0 24 24" style="color:var(--circ)"><use href="#i-circ"/></svg>Hint, don’t tell</div>
+          <div class="big r" style="--d:9.6"><svg class="i" viewBox="0 0 24 24" style="color:var(--accent)"><use href="#i-star"/></svg>Match the guide to the child</div>
+          <div class="big r" style="--d:12"><svg class="i" viewBox="0 0 24 24" style="color:var(--star)"><use href="#i-star"/></svg>Celebrate effort</div>
+        </div>
+      </section>
+    </div>
+
+    <p class="cap" id="cap" aria-live="off"></p>
+
+    <div class="bar">
+      <button class="ico" id="prev" aria-label="Previous scene"><svg viewBox="0 0 24 24"><path d="M6 5h2v14H6zM20 5v14L9.5 12z"/></svg></button>
+      <button class="ico" id="pp" aria-label="Play"><svg class="pl" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg><svg class="pa" viewBox="0 0 24 24"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg></button>
+      <button class="ico" id="next" aria-label="Next scene"><svg viewBox="0 0 24 24"><path d="M16 5h2v14h-2zM4 5v14l10.5-7z"/></svg></button>
+      <div class="segs" id="segs" role="group" aria-label="Scenes"></div>
+      <span class="count" id="count"></span>
+      <button id="ccBtn" aria-pressed="true">Captions on</button>
+      <select id="spd" aria-label="Speed"><option value="0.8">0.8x</option><option value="1" selected>1x</option><option value="1.25">1.25x</option></select>
+      <button id="fs">Full screen</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var player=document.getElementById('player');
+  var slides=[].slice.call(document.querySelectorAll('.slide'));
+  var N=slides.length, idx=0, playing=false, voiceOn=true, speed=1, dur=8, elapsed=0, startedAt=0;
+  var timers=[], token=0;
+  var hasTTS='speechSynthesis' in window && typeof SpeechSynthesisUtterance!=='undefined';
+  var cap=document.getElementById('cap'), segsEl=document.getElementById('segs'), count=document.getElementById('count');
+  var pp=document.getElementById('pp'), ccBtn=document.getElementById('ccBtn');
+  var segs=[];
+
+  slides.forEach(function(s,i){
+    var b=document.createElement('button');
+    b.className='seg'; b.setAttribute('aria-label','Scene '+(i+1)+': '+s.getAttribute('data-title'));
+    b.title=s.getAttribute('data-title'); b.innerHTML='<i></i>';
+    b.addEventListener('click',function(){ show(i); });
+    segsEl.appendChild(b); segs.push(b);
+  });
+
+  function clearTimers(){ timers.forEach(clearTimeout); timers=[]; }
+  function words(t){ return t.split(/\s+/).length; }
+  function estimate(text){ return Math.max(8, (words(text)/2.4+2.5)/speed); }
+
+  function show(i){
+    clearTimers(); token++;
+    if(hasTTS) speechSynthesis.cancel();
+    idx=Math.max(0,Math.min(N-1,i));
+    player.classList.remove('frozen');
+    slides.forEach(function(s){ s.classList.remove('active'); });
+    void player.offsetWidth;
+    var s=slides[idx]; s.classList.add('active'); s.scrollTop=0;
+    var text=s.getAttribute('data-narr');
+    cap.textContent=text;
+    count.textContent='Scene '+(idx+1)+' of '+N;
+    dur=estimate(text); elapsed=0;
+    segs.forEach(function(b,k){
+      b.classList.remove('cur'); b.classList.toggle('done',k<idx);
+    });
+    void segsEl.offsetWidth;
+    segs[idx].style.setProperty('--dur',dur+'s');
+    segs[idx].classList.add('cur');
+    if(playing) schedule(dur);
+  }
+
+  function schedule(seconds){
+    clearTimers(); var t=token; startedAt=Date.now();
+    if(voiceOn && hasTTS && elapsed===0){
+      var u=new SpeechSynthesisUtterance(slides[idx].getAttribute('data-narr'));
+      u.lang='en-US'; u.rate=speed;
+      var vs=speechSynthesis.getVoices(); var v=null, en=[];
+      for(var k=0;k<vs.length;k++){ if(/^en/i.test(vs[k].lang)) en.push(vs[k]); }
+      var fem=/female|zira|samantha|karen|moira|tessa|susan|hazel|jenny|aria|libby|sonia|serena|victoria|allison|ava|google us english|google uk english female/i;
+      for(var k=0;k<en.length&&!v;k++){ if(fem.test(en[k].name)) v=en[k]; }
+      if(!v && en.length) v=en[0];
+      u.pitch=1.1;
+      if(v) u.voice=v;
+      u.onend=function(){ if(t===token && playing){ timers.push(setTimeout(function(){ if(t===token&&playing) advance(); },900)); } };
+      speechSynthesis.speak(u);
+      timers.push(setTimeout(function(){ if(t===token&&playing) advance(); }, seconds*1000*1.9+4000));
+    } else {
+      timers.push(setTimeout(function(){ if(t===token&&playing) advance(); }, Math.max(0,seconds)*1000));
+    }
+  }
+
+  function advance(){
+    if(idx<N-1){ show(idx+1); }
+    else { setPlaying(false); segs[idx].classList.remove('cur'); segs[idx].classList.add('done'); }
+  }
+
+  function setPlaying(p){
+    playing=p;
+    player.classList.toggle('playing',p);
+    pp.setAttribute('aria-label',p?'Pause':'Play');
+  }
+
+  function play(){
+    if(playing) return;
+    if(idx===N-1 && segs[idx].classList.contains('done')){ setPlaying(true); show(0); return; }
+    setPlaying(true);
+    if(player.classList.contains('frozen') && !(voiceOn&&hasTTS)){
+      player.classList.remove('frozen');
+      schedule(dur-elapsed);
+    } else {
+      player.classList.remove('frozen');
+      show(idx);
+    }
+  }
+  function pause(){
+    if(!playing) return;
+    elapsed+= (Date.now()-startedAt)/1000;
+    setPlaying(false); clearTimers(); token++;
+    if(hasTTS) speechSynthesis.cancel();
+    player.classList.add('frozen');
+    if(voiceOn&&hasTTS) elapsed=0;
+  }
+  function toggle(){ playing?pause():play(); }
+
+  pp.addEventListener('click',toggle);
+  document.getElementById('startBtn').addEventListener('click',function(){ if(!playing) play(); });
+  document.getElementById('prev').addEventListener('click',function(){ show(idx-1); });
+  document.getElementById('next').addEventListener('click',function(){ show(idx+1); });
+  ccBtn.addEventListener('click',function(){
+    var on=cap.hidden; cap.hidden=!on; ccBtn.setAttribute('aria-pressed',on); ccBtn.textContent=on?'Captions on':'Captions off';
+  });
+  document.getElementById('spd').addEventListener('change',function(e){
+    speed=parseFloat(e.target.value); if(playing) show(idx);
+  });
+  document.getElementById('fs').addEventListener('click',function(){
+    try{
+      if(document.fullscreenElement){ document.exitFullscreen(); }
+      else if(player.requestFullscreen){ player.requestFullscreen(); }
+    }catch(e){}
+  });
+  document.addEventListener('keydown',function(e){
+    var tag=(e.target&&e.target.tagName)||'';
+    if(tag==='SELECT') return;
+    if(e.code==='Space' && tag!=='BUTTON'){ e.preventDefault(); toggle(); }
+    else if(e.key==='ArrowRight'){ show(idx+1); }
+    else if(e.key==='ArrowLeft'){ show(idx-1); }
+    else if(e.key==='f'||e.key==='F'){ document.getElementById('fs').click(); }
+  });
+  document.addEventListener('visibilitychange',function(){ if(document.hidden) pause(); });
+
+  if(hasTTS){ try{ speechSynthesis.getVoices(); speechSynthesis.onvoiceschanged=function(){}; }catch(e){} }
+  show(0);
+})();
+</script>
+</body>
+</html>
