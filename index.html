@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ARAL Reading Tutor’s Guide Videos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700;800&family=Lexend:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#EEF4FA;--stage:#fff;--ink:#12263F;--ink2:#46596F;--line:#C5D4E4;--accent:#2457D6;--accent-bg:#E4ECFF;color-scheme:light}
+@media (prefers-color-scheme:dark){:root{--paper:#0A1424;--stage:#10203A;--ink:#EAF1F8;--ink2:#A3B6CB;--line:#2A4262;--accent:#86AAFF;--accent-bg:#1B2F5E;color-scheme:dark}}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"Lexend",system-ui,sans-serif;line-height:1.45}
+.wrap{max-width:900px;margin:0 auto;padding:28px 16px 40px}
+h1{font-family:"Bricolage Grotesque","Lexend",sans-serif;font-size:clamp(28px,6vw,48px);line-height:1.08;margin:0 0 10px;letter-spacing:-.01em}
+.lead{color:var(--ink2);font-size:clamp(16px,2.4vw,20px);margin:0 0 18px;max-width:46ch}
+.how{background:var(--accent-bg);border:2px solid var(--accent);border-radius:14px;padding:14px 18px;margin:0 0 24px;font-size:16px}
+.how b{display:block;margin-bottom:4px}
+.how ol{margin:0;padding-left:1.2em}
+.grid{display:grid;gap:14px;grid-template-columns:1fr}
+@media (min-width:700px){.grid{grid-template-columns:repeat(3,1fr)}}
+a.card{display:flex;flex-direction:column;gap:6px;text-decoration:none;color:inherit;background:var(--stage);border:2px solid var(--line);border-radius:16px;padding:18px;min-height:150px;transition:transform .15s,border-color .15s}
+a.card:hover,a.card:focus-visible{transform:translateY(-3px);border-color:var(--accent);outline:none}
+a.card:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.tag{align-self:flex-start;background:var(--accent-bg);color:var(--accent);border-radius:999px;padding:.15em .8em;font-weight:600;font-size:13px}
+a.card h2{font-family:"Bricolage Grotesque",sans-serif;font-size:24px;margin:4px 0 0}
+a.card p{margin:0;color:var(--ink2);font-size:15px}
+a.card .go{margin-top:auto;color:var(--accent);font-weight:600}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>ARAL Reading Tutor’s Guide Videos</h1>
+  <p class="lead">Short video explainers on how to use the ARAL Reading Tutor’s Guides.</p>
+  <div class="how"><b>How to use this page</b>
+    <ol>
+      <li>Pick the video that matches the guide you are using.</li>
+      <li>Press <b style="display:inline">Start the video</b> on the first screen.</li>
+      <li>The voice plays by itself. Turn on captions if you need them.</li>
+    </ol>
+  </div>
+  <div class="grid">
+    <a class="card" href="ks1.html"><span class="tag">Grades 1 to 3</span><h2>Key Stage 1</h2><p>English and Filipino guides</p><span class="go">Watch the video →</span></a>
+    <a class="card" href="basic.html"><span class="tag">KS2 and KS3</span><h2>Basic</h2><p>Key Stage 2 and Key Stage 3</p><span class="go">Watch the video →</span></a>
+    <a class="card" href="plus.html"><span class="tag">KS2 and KS3</span><h2>Plus</h2><p>Key Stage 2 and Key Stage 3</p><span class="go">Watch the video →</span></a>
+  </div>
+</div>
+</body>
+</html>
